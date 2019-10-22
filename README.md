@@ -4,7 +4,7 @@
 
 **Folder Structure & Naming Conventions**
 
-- We use [github.com/Allar/ue4-style-guide] as our guide for creating assets
+- We use [https://github.com/Allar/ue4-style-guide] as our guide for creating assets
 
 **Programming**
 
