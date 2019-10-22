@@ -5,6 +5,7 @@
 **Folder Structure & Naming Conventions**
 
 - We use [this guide](https://github.com/Allar/ue4-style-guide) for creating assets
+- We use [this guide](https://docs.unrealengine.com/en-US/Programming/Development/CodingStandard/index.html) for coding conventions
 
 **Programming**
 
