@@ -11,8 +11,8 @@
 - Use the [quickreference guide](https://docs.unrealengine.com/en-US/Gameplay/Framework/QuickReference/index.html) to learn how UE4 is structured.
 - Class [Actor](https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Actors/index.html), this is the base class of almost ALL classes in UE4 _important_.
 - Class [GameMode/GameState](https://docs.unrealengine.com/en-US/Gameplay/Framework/GameMode/index.html).
-- Class [Pawn](https://docs.unrealengine.com/en-US/Gameplay/Framework/Pawn/index.html].
-- Class Controller (https://docs.unrealengine.com/en-US/Gameplay/Framework/Controller/index.html).
+- Class [Pawn](https://docs.unrealengine.com/en-US/Gameplay/Framework/Pawn/index.html).
+- Class [Controller](https://docs.unrealengine.com/en-US/Gameplay/Framework/Controller/index.html).
 - For our first game we should focus on [Blueprint scripting](https://docs.unrealengine.com/en-US/Engine/Blueprints/index.html).
 - We are creating a 2D game.. so [Paper2D](https://docs.unrealengine.com/en-US/Engine/Paper2D/index.html) is very important.
 
