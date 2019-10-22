@@ -2,6 +2,10 @@
 
 **GUIDELINES**
 
+**Folder Structure & Naming Conventions**
+
+- We use github.com/Allar/ue4-style-guide as our guide for creating assets
+
 **Programming**
 
 - Use https://docs.unrealengine.com/en-US/Gameplay/Framework/QuickReference/index.html to learn how UE4 is structured.
