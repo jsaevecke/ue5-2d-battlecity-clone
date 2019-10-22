@@ -21,7 +21,6 @@
 - Collision size: 8x8 pixels
 - Character size: 32x32 pixels
 - Tilemap size: 26x26 sprites
-
 - Movable Sprites need to work for 4 directions (north, east, south, west)
 - For Animations UE4 uses [Flipbooks](https://docs.unrealengine.com/en-US/Engine/Paper2D/Flipbooks/index.html)
 
