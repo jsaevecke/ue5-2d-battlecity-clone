@@ -13,5 +13,4 @@ UCLASS()
 class PROJECT_BATTLECITY__API ABattleCityPlayerController : public APlayerController
 {
 	GENERATED_BODY()
-	
 };
