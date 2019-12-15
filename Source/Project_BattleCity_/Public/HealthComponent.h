@@ -2,47 +2,41 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "HealthComponent.generated.h"
 
-UENUM(BlueprintType)
-enum class EHealthModificationType : uint8
-{
-	Damage,
-	Heal,
-	PenetrationDamage
-};
+#include "ModificationType.h"
+#include "HealthComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHealthIsDepleted);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FHealthModification, int, CurrentHealthpoints, int, MaxHealthpoints, EHealthModificationType, ModificationType);
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup=(Health), meta=(BlueprintSpawnableComponent), HideCategories=(Tags, Activation, ComponentReplication, Variable, AssetUserData, ComponentTick))
 class PROJECT_BATTLECITY__API UHealthComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
 	UHealthComponent();
 
-	UFUNCTION(BlueprintCallable, Category = "BlackBox|Components|Health")
+	UFUNCTION(BlueprintCallable, Category = "BlackBox|Health")
 	void ModifyHealthpoints(int amount, EHealthModificationType type);
-	UFUNCTION(BlueprintCallable, Category = "BlackBox|Components|Health")
+	UFUNCTION(BlueprintCallable, Category = "BlackBox|Health")
 	void SetCurrentHealthpoints(int healthpoints);
 
 protected:
-	UFUNCTION(BlueprintCallable, Category = "BlackBox|Components|Health")
+	UFUNCTION(BlueprintCallable, Category = "BlackBox|Health")
 	void CheckHealth();
-public:
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "BlackBox|Components|Health")
-	FHealthIsDepleted HealthIsDepletedDelegate;
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "BlackBox|Components|Health")
-	FHealthModification HealthModificationDelegate;
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BlackBox|Components|Health")
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "BlackBox|Health")
+	FHealthIsDepleted HealthIsDepletedDelegate;
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "BlackBox|Health")
+	FHealthModification HealthModificationDelegate;
+	UPROPERTY(EditDefaultsOnly, Category = "BlackBox|Health")
 	int MaxHealthpoints = 1;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BlackBox|Components|Health")
+	UPROPERTY(EditDefaultsOnly, Category = "BlackBox|Health")
 	int CurrentHealthpoints = 1;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BlackBox|Components|Health")
+	UPROPERTY(EditDefaultsOnly, Category = "BlackBox|Health")
+	bool IsIndestructible = false;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "BlackBox|Health")
 	TSet<EHealthModificationType> ValidModificationTypes;
 };

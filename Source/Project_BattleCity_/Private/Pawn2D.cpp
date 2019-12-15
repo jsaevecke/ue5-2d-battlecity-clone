@@ -8,18 +8,23 @@
 #include "Engine/World.h"
 #include "HealthComponent.h"
 
-// Sets default values
 APawn2D::APawn2D()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bStartWithTickEnabled = false;
 
-	Collider = CreateDefaultSubobject<UBoxComponent>(FName("Collider"));
-	Body = CreateDefaultSubobject<UPaperFlipbookComponent>(FName("Body"));
-	Health = CreateDefaultSubobject<UHealthComponent>(FName("Health"));
+	BoxComponent = CreateDefaultSubobject<UBoxComponent>(FName("BoxComponent"));
+	FlipbookComponent = CreateDefaultSubobject<UPaperFlipbookComponent>(FName("FlipbookComponent"));
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(FName("HealthComponent"));
 
-	Body->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	BoxComponent->PrimaryComponentTick.bStartWithTickEnabled = false;
+	FlipbookComponent->PrimaryComponentTick.bStartWithTickEnabled = false;
 
-	SetRootComponent(Collider);
+	FlipbookComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	SetRootComponent(BoxComponent);
+
+	UpdateStates();
 }
 
 void APawn2D::SetupPlayerInputComponent(UInputComponent* InputComponent)
@@ -127,4 +132,11 @@ void APawn2D::UpdateStates()
 
 	if (lastMovementState != MovementState)
 		MovementStateChangedDelegate.Broadcast(MovementState);
+
+	if (AnimationByMovementState.Contains(MovementState))
+	{
+		auto flipbook = AnimationByMovementState[MovementState];
+
+		FlipbookComponent->SetFlipbook(flipbook);
+	}
 }

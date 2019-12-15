@@ -4,13 +4,14 @@
 UHealthComponent::UHealthComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bStartWithTickEnabled = false;
 
 	CheckHealth();
 }
 
 void UHealthComponent::ModifyHealthpoints(int amount, EHealthModificationType type)
 {
-	if (!ValidModificationTypes.Contains(type) || amount == 0)
+	if (!ValidModificationTypes.Contains(type) || amount == 0 || IsIndestructible)
 		return;
 
 	if (type == EHealthModificationType::Heal)

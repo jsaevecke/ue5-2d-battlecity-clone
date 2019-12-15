@@ -4,30 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "MovementState.h"
+#include "ForwardState.h"
 #include "Pawn2D.generated.h"
-
-//Description(Tooltip), Category, ReadWritePermission
-UENUM(BlueprintType)
-enum class EMovementState : uint8
-{
-	UpIdle UMETA(DisplayName = "UpIdle"),
-	DownIdle UMETA(DisplayName = "DownIdle"),
-	LeftIdle UMETA(DisplayName = "LeftIdle"),
-	RightIdle UMETA(DisplayName = "RightIdle"),
-	UpMovement UMETA(DisplayName = "UpMovement"),
-	DownMovement UMETA(DisplayName = "DownMovement"),
-	LeftMovement UMETA(DisplayName = "LeftMovement"),
-	RightMovement UMETA(DisplayName = "RightMovement")
-};
-
-UENUM(BlueprintType)
-enum class EForwardState : uint8
-{
-	Up UMETA(DisplayName = "Up"),
-	Down UMETA(DisplayName = "Down"),
-	Left UMETA(DisplayName = "Left"),
-	Right UMETA(DisplayName = "Right")
-};
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMovementStateChangedDelegate, const EMovementState, MovementState);
 
@@ -38,47 +17,47 @@ class PROJECT_BATTLECITY__API APawn2D : public APawn
 public:
 	APawn2D();
 
-	UFUNCTION(BlueprintCallable, Category="BlackBox|Pawn2d|Movement")
+	UFUNCTION(BlueprintCallable, Category="BlackBox|Movement")
 	void Move(const FVector direction, const float scale);
 
 protected:
 	void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 	
-	UFUNCTION(BlueprintCallable, Category = "BlackBox|Pawn2d|Movement")
+	UFUNCTION(BlueprintCallable, Category = "BlackBox|Movement")
 	void UpdateStates();
-	UFUNCTION(BlueprintCallable, Category = "BlackBox|Pawn2d|Movement")
+	UFUNCTION(BlueprintCallable, Category = "BlackBox|Movement")
 	void Move_XAxis(float AxisValue);
-	UFUNCTION(BlueprintCallable, Category = "BlackBox|Pawn2d|Movement")
+	UFUNCTION(BlueprintCallable, Category = "BlackBox|Movement")
 	void Move_YAxis(float AxisValue);
 
-public:
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "BlackBox|Pawn2D|Events")
-	FMovementStateChangedDelegate MovementStateChangedDelegate;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BlackBox|Pawn2D|Movement")
-	float Speed = 50.f;
-
 protected:
-	//UPROPERTIES + Categories
-	UPROPERTY(BlueprintReadWrite, Category = "BlackBox|Pawn2D|Appearance")
-	class UBoxComponent* Collider = nullptr;
-	UPROPERTY(BlueprintReadWrite, Category="BlackBox|Pawn2D|Appearance")
-	class UPaperFlipbookComponent* Body = nullptr;
-	UPROPERTY(BlueprintReadWrite, Category = "BlackBox|Pawn2D|Health")
-	class UHealthComponent* Health = nullptr;
+	UPROPERTY()
+	class UBoxComponent* BoxComponent = nullptr;
+	UPROPERTY()
+	class UPaperFlipbookComponent* FlipbookComponent = nullptr;
+	UPROPERTY(VisibleAnywhere, meta = (ExposeFunctionCategories = "BlackBox|Health", AllowPrivateAccess = "true"))
+	class UHealthComponent* HealthComponent = nullptr;
 
-	UPROPERTY(BlueprintReadOnly, Category = "BlackBox|Pawn2D|Movement")
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "BlackBox|Events")
+	FMovementStateChangedDelegate MovementStateChangedDelegate;
+
+	UPROPERTY(EditDefaultsOnly, Category = "BlackBox|Appearance")
+	TMap<EMovementState, class UPaperFlipbook*> AnimationByMovementState;
+
+	UPROPERTY(EditDefaultsOnly, Category = "BlackBox|Movement")
+	float Speed = 50.f;
+	UPROPERTY(BlueprintReadOnly, Category = "BlackBox|Movement")
 	bool IsMoving = false;
-	UPROPERTY(BlueprintReadOnly, Category = "BlackBox|Pawn2D|Movement")
+	UPROPERTY(BlueprintReadOnly, Category = "BlackBox|Movement")
 	bool IsHorizontalAxisProcessing = false;
-	UPROPERTY(BlueprintReadOnly, Category = "BlackBox|Pawn2D|Movement")
+	UPROPERTY(BlueprintReadOnly, Category = "BlackBox|Movement")
 	bool IsVerticalAxisProcessing = false;
-	UPROPERTY(BlueprintReadOnly, Category = "BlackBox|Pawn2D|Movement")
+	UPROPERTY(BlueprintReadOnly, Category = "BlackBox|Movement")
 	FVector ForwardDirection = FVector(0.f, 0.f, 1.f);
-	UPROPERTY(BlueprintReadOnly, Category = "BlackBox|Pawn2D|Movement")
+	UPROPERTY(BlueprintReadOnly, Category = "BlackBox|Movement")
 	FVector Velocity = FVector(0.f, 0.f, 0.f);
-	UPROPERTY(BlueprintReadOnly, Category = "BlackBox|Pawn2D|Movement")
+	UPROPERTY(BlueprintReadOnly, Category = "BlackBox|Movement")
 	EMovementState MovementState = EMovementState::UpIdle;
-	UPROPERTY(BlueprintReadOnly, Category = "BlackBox|Pawn2D|Movement")
+	UPROPERTY(BlueprintReadOnly, Category = "BlackBox|Movement")
 	EForwardState ForwardState = EForwardState::Up;
-
 };
