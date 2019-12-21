@@ -10,20 +10,28 @@
 
 APawn2D::APawn2D()
 {
+	/* TESTING */
+	AIControllerClass = nullptr;
+	AutoPossessAI = EAutoPossessAI::Disabled;
+	AutoPossessPlayer = EAutoReceiveInput::Player0;
+	/////////////
+
 	PrimaryActorTick.bCanEverTick = false;
 	PrimaryActorTick.bStartWithTickEnabled = false;
 
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>(FName("BoxComponent"));
-	FlipbookComponent = CreateDefaultSubobject<UPaperFlipbookComponent>(FName("FlipbookComponent"));
-	HealthComponent = CreateDefaultSubobject<UHealthComponent>(FName("HealthComponent"));
-
 	BoxComponent->PrimaryComponentTick.bStartWithTickEnabled = false;
-	FlipbookComponent->PrimaryComponentTick.bStartWithTickEnabled = false;
-
-	FlipbookComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-
 	SetRootComponent(BoxComponent);
 
+	FlipbookComponent = CreateDefaultSubobject<UPaperFlipbookComponent>(FName("FlipbookComponent"));
+	FlipbookComponent->PrimaryComponentTick.bStartWithTickEnabled = false;
+	FlipbookComponent->SetupAttachment(GetRootComponent());
+
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(FName("HealthComponent"));
+}
+
+void APawn2D::BeginPlay() 
+{
 	UpdateStates();
 }
 
@@ -58,7 +66,7 @@ void APawn2D::Move_XAxis(float AxisValue)
 
 		if (!IsHorizontalAxisProcessing)
 		{ 
-			Move(FVector(0.f, 0.f, 1.f), roundedAxisValue);
+			Move(FVector(1.f, 0.f, 0.f), roundedAxisValue);
 		}
 	}
 }
@@ -136,7 +144,6 @@ void APawn2D::UpdateStates()
 	if (AnimationByMovementState.Contains(MovementState))
 	{
 		auto flipbook = AnimationByMovementState[MovementState];
-
 		FlipbookComponent->SetFlipbook(flipbook);
 	}
 }

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Pawn2D.h"
+#include "ModificationType.h"
 #include "BaseTank2D.generated.h"
 
 UCLASS(HideCategories=("Actor Tick", Pawn, Camera, Rendering, Replication, Input, Actor, Collision, Cooking, LOD))
@@ -13,13 +14,30 @@ class PROJECT_BATTLECITY__API ABaseTank2D : public APawn2D
 public:
 	ABaseTank2D();
 
+	void BeginPlay() override;
+
+	UFUNCTION(BlueprintCallable, Category = "BlackBox|Turret")
+	void Shoot();
+
 protected:
 	void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
+
+	UFUNCTION()
+	void SetupTurret();
+	UFUNCTION()
+	void SetupEvents();
+
+	UFUNCTION()
+	void OnHealthIsDepleted();
+	UFUNCTION()
+	void OnHealthModified(int currentHealthpoints, int maxHealthpoints, EHealthModificationType type);
+	UFUNCTION()
+	void OnMovementStateChanged(const EMovementState newMovementState);
 
 protected:
 	UPROPERTY()
 	class UAudioComponent* Motor = nullptr;
-	UPROPERTY()
+	UPROPERTY() //FTimeline?
 	class UTimelineComponent* MotorTimeline = nullptr;
 
 	UPROPERTY()
@@ -27,7 +45,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "BlackBox|Turret")
 	TSubclassOf<class ABaseTurret> TurretClass = nullptr;
 	UPROPERTY(EditDefaultsOnly, Category = "BlackBox|Turret")
-	FString TurretSocket = "Turret";
+	FName TurretSocket = "Turret";
 
 	UPROPERTY(EditDefaultsOnly, Category = "BlackBox|SoundEffects")
 	class UCurveFloat* MotorPitchCurve = nullptr;

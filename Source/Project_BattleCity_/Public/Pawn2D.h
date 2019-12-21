@@ -17,6 +17,8 @@ class PROJECT_BATTLECITY__API APawn2D : public APawn
 public:
 	APawn2D();
 
+	void BeginPlay() override;
+
 	UFUNCTION(BlueprintCallable, Category="BlackBox|Movement")
 	void Move(const FVector direction, const float scale);
 
@@ -31,9 +33,9 @@ protected:
 	void Move_YAxis(float AxisValue);
 
 protected:
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	class UBoxComponent* BoxComponent = nullptr;
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	class UPaperFlipbookComponent* FlipbookComponent = nullptr;
 	UPROPERTY(VisibleAnywhere, meta = (ExposeFunctionCategories = "BlackBox|Health", AllowPrivateAccess = "true"))
 	class UHealthComponent* HealthComponent = nullptr;

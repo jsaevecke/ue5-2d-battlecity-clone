@@ -11,9 +11,16 @@ UCLASS(HideCategories=("Actor Tick", Rendering, Replication, Input, Actor, Colli
 class PROJECT_BATTLECITY__API ABaseTurret : public AActor2D
 {
 	GENERATED_BODY()
+public:
+	UFUNCTION(BlueprintCallable, Category="BlackBox|Appearance")
+	void Shoot(FVector direction);
+
+	UFUNCTION()
+	void UpdateStates(EMovementState movementState);
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category="BlackBox|Appearance")
-	TMap<EMovementState, class UPaperFlipBook*> AnimationByMovementState;
+	TMap<EMovementState, class UPaperFlipbook*> AnimationByMovementState;
 	UPROPERTY(EditDefaultsOnly, Category = "BlackBox|SoundEffects")
 	class USoundCue* ShootingCue = nullptr;
 	UPROPERTY(EditDefaultsOnly, Category = "BlackBox|Projectile")

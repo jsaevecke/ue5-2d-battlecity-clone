@@ -18,8 +18,8 @@ AActor2D::AActor2D()
 	BoxComponent->PrimaryComponentTick.bStartWithTickEnabled = false;
 	FlipbookComponent->PrimaryComponentTick.bStartWithTickEnabled = false;
 
-	FlipbookComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-
 	SetRootComponent(BoxComponent);
+
+	FlipbookComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 

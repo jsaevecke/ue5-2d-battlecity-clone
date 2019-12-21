@@ -22,15 +22,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "BlackBox|Health")
 	void SetCurrentHealthpoints(int healthpoints);
 
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "BlackBox|Health")
+	FHealthIsDepleted HealthIsDepletedDelegate;
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "BlackBox|Health")
+	FHealthModification HealthModificationDelegate;
 protected:
 	UFUNCTION(BlueprintCallable, Category = "BlackBox|Health")
 	void CheckHealth();
 
 protected:
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "BlackBox|Health")
-	FHealthIsDepleted HealthIsDepletedDelegate;
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "BlackBox|Health")
-	FHealthModification HealthModificationDelegate;
 	UPROPERTY(EditDefaultsOnly, Category = "BlackBox|Health")
 	int MaxHealthpoints = 1;
 	UPROPERTY(EditDefaultsOnly, Category = "BlackBox|Health")
