@@ -7,7 +7,7 @@
 #include "ModificationType.h"
 #include "BaseTank2D.generated.h"
 
-UCLASS(HideCategories=("Actor Tick", Pawn, Camera, Rendering, Replication, Input, Actor, Collision, Cooking, LOD))
+UCLASS(HideCategories=("Actor Tick", Pawn, Camera, Rendering, Replication, Input, Actor, Cooking, LOD))
 class PROJECT_BATTLECITY__API ABaseTank2D : public APawn2D
 {
 	GENERATED_BODY()
@@ -24,15 +24,13 @@ protected:
 
 	UFUNCTION()
 	void SetupTurret();
-	UFUNCTION()
-	void SetupEvents();
 
 	UFUNCTION()
 	void OnHealthIsDepleted();
 	UFUNCTION()
-	void OnHealthModified(int currentHealthpoints, int maxHealthpoints, EHealthModificationType type);
+	void OnHealthModified(int CurrentHealthPoints, int MaxHealthPoints, EHealthModificationType Type) const;
 	UFUNCTION()
-	void OnMovementStateChanged(const EMovementState newMovementState);
+	void OnMovementStateChanged(EMovementState NewMovementState) const;
 
 protected:
 	UPROPERTY()

@@ -24,8 +24,6 @@ void ABaseTank2D::BeginPlay()
 
 	SetupTurret();
 
-	SetupEvents();
-
 	if (IsValid(MotorCue))
 	{
 		Motor->SetSound(MotorCue);
@@ -34,12 +32,12 @@ void ABaseTank2D::BeginPlay()
 		{
 			MotorTimeline->SetFloatCurve(MotorPitchCurve, FName("Pitch"));
 
-			float min, max;
-			MotorPitchCurve->GetTimeRange(min, max);
+			float Min, Max;
+			MotorPitchCurve->GetTimeRange(Min, Max);
 
-			auto timelineLength = max - min;
+			const auto TimelineLength = Max - Min;
 
-			MotorTimeline->SetTimelineLength(timelineLength);
+			MotorTimeline->SetTimelineLength(TimelineLength);
 		}
 
 		Motor->Play();
@@ -50,36 +48,30 @@ void ABaseTank2D::SetupPlayerInputComponent(UInputComponent* InputComponent)
 {
 	Super::SetupPlayerInputComponent(InputComponent);
 
-	InputComponent->BindAction("Shoot", EInputEvent::IE_Pressed, this, &ABaseTank2D::Shoot);
+	InputComponent->BindAction("Shoot", IE_Pressed, this, &ABaseTank2D::Shoot);
 }
 
 void ABaseTank2D::SetupTurret() 
 {
 	if (FlipbookComponent->DoesSocketExist(TurretSocket))
 	{
-		auto socketLocation = FlipbookComponent->GetSocketLocation(TurretSocket);
+		auto SocketLocation = FlipbookComponent->GetSocketLocation(TurretSocket);
 
-		Turret = Cast<ABaseTurret>(GetWorld()->SpawnActor(TurretClass, &socketLocation));
+		Turret = Cast<ABaseTurret>(GetWorld()->SpawnActor(TurretClass, &SocketLocation));
 
 		if (IsValid(Turret))
 		{
-			auto attachementRules = FAttachmentTransformRules(
+			const auto AttachmentRules = FAttachmentTransformRules(
 				EAttachmentRule::SnapToTarget,
 				EAttachmentRule::KeepRelative,
 				EAttachmentRule::KeepRelative,
 				true);
 
-			Turret->AttachToComponent(FlipbookComponent, attachementRules);
+			Turret->AttachToComponent(FlipbookComponent, AttachmentRules);
+			Turret->SetActorRelativeLocation(FVector(0.f, 1.f, 0.f));
+			Turret->UpdateStates(MovementState);
 		}
 	}
-}
-
-void ABaseTank2D::SetupEvents()
-{
-	//MovementStateChangedDelegate.AddDynamic(this, &ABaseTank2D::OnMovementStateChanged);
-	
-	//HealthComponent->HealthIsDepletedDelegate.AddDynamic(this, &ABaseTank2D::OnHealthIsDepleted);
-	//HealthComponent->HealthModificationDelegate.AddDynamic(this, &ABaseTank2D::OnHealthModified);
 }
 
 void ABaseTank2D::OnHealthIsDepleted()
@@ -97,9 +89,9 @@ void ABaseTank2D::OnHealthIsDepleted()
 	Destroy();
 }
 
-void ABaseTank2D::OnHealthModified(int currentHealthpoints, int maxHealthpoints, EHealthModificationType type)
+void ABaseTank2D::OnHealthModified(int CurrentHealthPoints, int MaxHealthPoints, EHealthModificationType Type) const
 {
-	if (type != EHealthModificationType::Heal)
+	if (Type != EHealthModificationType::Heal)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, HitCue, GetActorLocation());
 	}
@@ -109,16 +101,16 @@ void ABaseTank2D::OnHealthModified(int currentHealthpoints, int maxHealthpoints,
 	}
 }
 
-void ABaseTank2D::OnMovementStateChanged(const EMovementState newMovementState)
+auto ABaseTank2D::OnMovementStateChanged(const EMovementState NewMovementState) const -> void
 {
 	if (IsValid(Turret))
 	{
-		Turret->UpdateStates(newMovementState);
+		Turret->UpdateStates(NewMovementState);
 	}
 
 	if (IsMoving)
 	{
-		//Motor->
+		//TODO: MOTOR PITCH UPDATE
 	}
 }
 

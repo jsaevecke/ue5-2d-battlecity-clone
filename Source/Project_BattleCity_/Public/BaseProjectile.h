@@ -13,5 +13,12 @@ UCLASS()
 class PROJECT_BATTLECITY__API ABaseProjectile : public AActor2D
 {
 	GENERATED_BODY()
-	
+public:
+	ABaseProjectile();
+
+protected:
+	UPROPERTY(VisibleAnywhere)
+	class UProjectileMovementComponent* ProjectileMovementComponent = nullptr;
+	UPROPERTY(VisibleAnywhere, meta = (ExposeFunctionCategories = "BlackBox|Health", AllowPrivateAccess = "true"))
+	class UHealthComponent* HealthComponent = nullptr;
 };

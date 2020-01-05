@@ -18,5 +18,5 @@ protected:
 	UPROPERTY()
 	class UBoxComponent* BoxComponent = nullptr;
 	UPROPERTY()
-	class UPaperFlipbookComponent* FlipbookComponent = nullptr;
+	class UPaperFlipbookComponent* FlipBookComponent = nullptr;
 };

@@ -21,9 +21,11 @@ APawn2D::APawn2D()
 
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>(FName("BoxComponent"));
 	BoxComponent->PrimaryComponentTick.bStartWithTickEnabled = false;
+	BoxComponent->SetConstraintMode(EDOFMode::XZPlane);
+	BoxComponent->SetCollisionProfileName(FName("BlockAllDynamic"));
 	SetRootComponent(BoxComponent);
 
-	FlipbookComponent = CreateDefaultSubobject<UPaperFlipbookComponent>(FName("FlipbookComponent"));
+	FlipbookComponent = CreateDefaultSubobject<UPaperFlipbookComponent>(FName("FlipBookComponent"));
 	FlipbookComponent->PrimaryComponentTick.bStartWithTickEnabled = false;
 	FlipbookComponent->SetupAttachment(GetRootComponent());
 
@@ -37,58 +39,57 @@ void APawn2D::BeginPlay()
 
 void APawn2D::SetupPlayerInputComponent(UInputComponent* InputComponent)
 {
-	check(InputComponent);
 	InputComponent->BindAxis("Up&Down", this, &APawn2D::Move_YAxis);
 	InputComponent->BindAxis("Left&Right", this, &APawn2D::Move_XAxis);
 }
 
-void APawn2D::Move(FVector direction, float scale)
+void APawn2D::Move(const FVector Direction, const float Scale)
 {
-	auto deltaSeconds = GetWorld()->GetDeltaSeconds();
+	const auto DeltaSeconds = GetWorld()->GetDeltaSeconds();
 
-	Velocity = direction * scale * Speed * deltaSeconds;
+	Velocity = Direction * Scale * Speed * DeltaSeconds;
 	IsMoving = Velocity.SizeSquared() > 0.f;
 
-	auto newPosition = GetActorLocation() + Velocity;
+	const auto NewPosition = GetActorLocation() + Velocity;
 
 	UpdateStates();
 
-	SetActorLocation(newPosition, true);
+	SetActorLocation(NewPosition, true);
 }
 
-void APawn2D::Move_XAxis(float AxisValue)
+void APawn2D::Move_XAxis(const float AxisValue)
 {
-	auto roundedAxisValue = FMath::RoundToInt(AxisValue);
+	const auto RoundedAxisValue = FMath::RoundToInt(AxisValue);
 
 	if (!IsHorizontalAxisProcessing)
 	{
-		IsVerticalAxisProcessing = roundedAxisValue != 0;
+		IsVerticalAxisProcessing = RoundedAxisValue != 0;
 
 		if (!IsHorizontalAxisProcessing)
 		{ 
-			Move(FVector(1.f, 0.f, 0.f), roundedAxisValue);
+			Move(FVector(1.f, 0.f, 0.f), RoundedAxisValue);
 		}
 	}
 }
 
-void APawn2D::Move_YAxis(float AxisValue)
+void APawn2D::Move_YAxis(const float AxisValue)
 {
-	auto roundedAxisValue = FMath::RoundToInt(AxisValue);
+	const auto RoundedAxisValue = FMath::RoundToInt(AxisValue);
 
 	if (!IsVerticalAxisProcessing)
 	{
-		IsHorizontalAxisProcessing = roundedAxisValue != 0;
+		IsHorizontalAxisProcessing = RoundedAxisValue != 0;
 
 		if (!IsVerticalAxisProcessing)
 		{
-			Move(FVector(0.f, 0.f, 1.f), roundedAxisValue);
+			Move(FVector(0.f, 0.f, 1.f), RoundedAxisValue);
 		}
 	}
 }
 
 void APawn2D::UpdateStates()
 {
-	auto lastMovementState = MovementState;
+	const auto LastMovementState = MovementState;
 
 	if (IsMoving)
 	{
@@ -138,12 +139,12 @@ void APawn2D::UpdateStates()
 		}
 	}
 
-	if (lastMovementState != MovementState)
+	if (LastMovementState != MovementState)
 		MovementStateChangedDelegate.Broadcast(MovementState);
 
 	if (AnimationByMovementState.Contains(MovementState))
 	{
-		auto flipbook = AnimationByMovementState[MovementState];
-		FlipbookComponent->SetFlipbook(flipbook);
+		const auto Flipbook = AnimationByMovementState[MovementState];
+		FlipbookComponent->SetFlipbook(Flipbook);
 	}
 }

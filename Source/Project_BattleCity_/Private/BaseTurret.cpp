@@ -4,15 +4,19 @@
 #include "BaseTurret.h"
 #include "PaperFlipbookComponent.h"
 
-void ABaseTurret::Shoot(FVector direction)
+ABaseTurret::ABaseTurret() : AActor2D()
+{
+}
+
+void ABaseTurret::Shoot(FVector Direction)
 {
 
 }
 
-void ABaseTurret::UpdateStates(EMovementState movementState)
+void ABaseTurret::UpdateStates(const EMovementState MovementState)
 {
-	if (AnimationByMovementState.Contains(movementState))
+	if (AnimationByMovementState.Contains(MovementState))
 	{
-		FlipbookComponent->SetFlipbook(AnimationByMovementState[movementState]);
+		FlipBookComponent->SetFlipbook(AnimationByMovementState[MovementState]);
 	}
 }

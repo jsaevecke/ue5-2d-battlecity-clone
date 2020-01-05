@@ -9,36 +9,36 @@ UHealthComponent::UHealthComponent()
 	CheckHealth();
 }
 
-void UHealthComponent::ModifyHealthpoints(int amount, EHealthModificationType type)
+void UHealthComponent::ModifyHealthPoints(const int Amount, const EHealthModificationType Type)
 {
-	if (!ValidModificationTypes.Contains(type) || amount == 0 || IsIndestructible)
+	if (!ValidModificationTypes.Contains(Type) || Amount == 0 || IsIndestructible)
 		return;
 
-	if (type == EHealthModificationType::Heal)
+	if (Type == EHealthModificationType::Heal)
 	{
-		CurrentHealthpoints += amount;
+		CurrentHealthPoints += Amount;
 	}
 	else
 	{
-		CurrentHealthpoints -= amount;
+		CurrentHealthPoints -= Amount;
 	}
 
-	HealthModificationDelegate.Broadcast(CurrentHealthpoints, MaxHealthpoints, type);
+	HealthModificationDelegate.Broadcast(CurrentHealthPoints, MaxHealthPoints, Type);
 
 	CheckHealth();
 }
 
-void UHealthComponent::SetCurrentHealthpoints(int healthpoints)
+void UHealthComponent::SetCurrentHealthPoints(const int HealthPoints)
 {
-	CurrentHealthpoints = healthpoints;
+	CurrentHealthPoints = HealthPoints;
 
 	CheckHealth();
 }
 
 void UHealthComponent::CheckHealth() {
-	CurrentHealthpoints = FMath::Clamp(CurrentHealthpoints, 0, MaxHealthpoints);
+	CurrentHealthPoints = FMath::Clamp(CurrentHealthPoints, 0, MaxHealthPoints);
 
-	if (CurrentHealthpoints <= 0)
+	if (CurrentHealthPoints <= 0)
 		HealthIsDepletedDelegate.Broadcast();
 }
 
