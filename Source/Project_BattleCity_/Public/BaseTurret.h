@@ -12,11 +12,13 @@ class PROJECT_BATTLECITY__API ABaseTurret : public AActor2D
 {
 	GENERATED_BODY()
 public:
+	ABaseTurret();
+	
 	UFUNCTION(BlueprintCallable, Category="BlackBox|Appearance")
-	void Shoot(FVector direction);
+	void Shoot(FVector Direction);
 
 	UFUNCTION()
-	void UpdateStates(EMovementState movementState);
+	void UpdateStates(EMovementState MovementState);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category="BlackBox|Appearance")

@@ -18,9 +18,9 @@ public:
 	UHealthComponent();
 
 	UFUNCTION(BlueprintCallable, Category = "BlackBox|Health")
-	void ModifyHealthpoints(int amount, EHealthModificationType type);
+	void ModifyHealthPoints(int Amount, EHealthModificationType Type);
 	UFUNCTION(BlueprintCallable, Category = "BlackBox|Health")
-	void SetCurrentHealthpoints(int healthpoints);
+	void SetCurrentHealthPoints(int HealthPoints);
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "BlackBox|Health")
 	FHealthIsDepleted HealthIsDepletedDelegate;
@@ -32,9 +32,9 @@ protected:
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "BlackBox|Health")
-	int MaxHealthpoints = 1;
+	int MaxHealthPoints = 1;
 	UPROPERTY(EditDefaultsOnly, Category = "BlackBox|Health")
-	int CurrentHealthpoints = 1;
+	int CurrentHealthPoints = 1;
 	UPROPERTY(EditDefaultsOnly, Category = "BlackBox|Health")
 	bool IsIndestructible = false;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "BlackBox|Health")

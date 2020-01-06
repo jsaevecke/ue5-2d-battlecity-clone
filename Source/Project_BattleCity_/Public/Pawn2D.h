@@ -20,7 +20,7 @@ public:
 	void BeginPlay() override;
 
 	UFUNCTION(BlueprintCallable, Category="BlackBox|Movement")
-	void Move(const FVector direction, const float scale);
+	void Move(const FVector Direction, const float Scale);
 
 protected:
 	void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;

@@ -13,13 +13,13 @@ AActor2D::AActor2D()
 	PrimaryActorTick.bStartWithTickEnabled = false;
 
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>(FName("BoxComponent"));
-	FlipbookComponent = CreateDefaultSubobject<UPaperFlipbookComponent>(FName("FlipbookComponent"));
-
 	BoxComponent->PrimaryComponentTick.bStartWithTickEnabled = false;
-	FlipbookComponent->PrimaryComponentTick.bStartWithTickEnabled = false;
-
+	BoxComponent->SetConstraintMode(EDOFMode::XZPlane);
+	BoxComponent->SetCollisionProfileName(FName("BlockAllDynamic"));
 	SetRootComponent(BoxComponent);
-
-	FlipbookComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	
+	FlipBookComponent = CreateDefaultSubobject<UPaperFlipbookComponent>(FName("FlipBookComponent"));
+	FlipBookComponent->PrimaryComponentTick.bStartWithTickEnabled = false;
+	FlipBookComponent->SetupAttachment(GetRootComponent());
 }
 
